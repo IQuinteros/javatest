@@ -16,11 +16,13 @@
         
         <nav>
             <ul>
-                <li>Inicio</li>
-                <li>Mascotas</li>
-                <li>Recetas</li>
-                <li>Administrador</li>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="mascotas/">Mascotas</a></li>
+                <li><a href="index.jsp">Recetas</a></li>
+                <li><a href="index.jsp">Administrador</a></li>
+                <li><a href="index.jsp">Iniciar sesión</a></li>
             </ul>
         </nav>
+       
     </body>
 </html>
