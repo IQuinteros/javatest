@@ -5,6 +5,7 @@
  */
 package controladores;
 
+import conexion.Conexion;
 import controladores.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +25,9 @@ public class MascotaJpaController implements Serializable {
 
     public MascotaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
+    }
+    public MascotaJpaController(){
+        this.emf = Conexion.getFactory();
     }
     private EntityManagerFactory emf = null;
 

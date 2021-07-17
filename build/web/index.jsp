@@ -1,13 +1,9 @@
 <%-- 
-    Document   : indexx
-    Created on : 17-07-2021, 16:04:39
+    Document   : realindex
+    Created on : 17-07-2021, 18:22:40
     Author     : Yunnicio
 --%>
 
-<%@page import="javax.persistence.Persistence"%>
-<%@page import="controladores.MascotaJpaController"%>
-<%@page import="java.util.List"%>
-<%@page import="modelos.Mascota"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,16 +12,15 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Página para adoptar mascotas</h1>
         
-        <%
-        
-        MascotaJpaController controller = new MascotaJpaController(Persistence.createEntityManagerFactory("TestingPU"));
-        List<Mascota> mascotas = controller.findMascotaEntities();
-        
-        for(int i = 0; i < mascotas.size(); i++){
-            out.print(mascotas.get(i).getNombre());
-        }
-        %>
+        <nav>
+            <ul>
+                <li>Inicio</li>
+                <li>Mascotas</li>
+                <li>Recetas</li>
+                <li>Administrador</li>
+            </ul>
+        </nav>
     </body>
 </html>

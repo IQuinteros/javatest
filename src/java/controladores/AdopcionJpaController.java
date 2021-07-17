@@ -5,6 +5,7 @@
  */
 package controladores;
 
+import conexion.Conexion;
 import controladores.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +25,9 @@ public class AdopcionJpaController implements Serializable {
 
     public AdopcionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
+    }
+    public AdopcionJpaController(){
+        this.emf = Conexion.getFactory();
     }
     private EntityManagerFactory emf = null;
 
