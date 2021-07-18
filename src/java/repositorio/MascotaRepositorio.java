@@ -7,7 +7,7 @@ package repositorio;
 
 import controladores.MascotaJpaController;
 import java.util.List;
-import modelos.Mascota;
+import entidades.Mascota;
 
 /**
  *

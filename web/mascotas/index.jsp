@@ -4,8 +4,10 @@
     Author     : Yunnicio
 --%>
 
+<%@page import="entidades.Cliente"%>
+<%@page import="repositorio.ClienteRepositorio"%>
 <%@page import="java.util.List"%>
-<%@page import="modelos.Mascota"%>
+<%@page import="entidades.Mascota"%>
 <%@page import="repositorio.MascotaRepositorio"%>
 <%@page import="controladores.MascotaJpaController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,7 +33,7 @@
                 <li><a href="#">Mascotas</a></li>
                 <li><a href="../index.jsp">Recetas</a></li>
                 <li><a href="../index.jsp">Administrador</a></li>
-                <li><a href="../index.jsp">Iniciar sesión</a></li>
+                <li><a href="../login.jsp"><%= ClienteRepositorio.getClienteSession(request) != null? "Cerrar sesión" : "Iniciar sesión" %></a></li>
             </ul>
         </nav>
         

@@ -4,6 +4,7 @@
     Author     : Yunnicio
 --%>
 
+<%@page import="repositorio.ClienteRepositorio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@
                 <li><a href="mascotas/">Mascotas</a></li>
                 <li><a href="index.jsp">Recetas</a></li>
                 <li><a href="index.jsp">Administrador</a></li>
-                <li><a href="index.jsp">Iniciar sesión</a></li>
+                <li><a href="login.jsp"><%= ClienteRepositorio.getClienteSession(request) != null? "Cerrar sesión" : "Iniciar sesión" %></a></li>
             </ul>
         </nav>
        
