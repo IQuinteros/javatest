@@ -4,6 +4,7 @@
     Author     : Yunnicio
 --%>
 
+<%@page import="modelos.Carro"%>
 <%@page import="entidades.Cliente"%>
 <%@page import="repositorio.ClienteRepositorio"%>
 <%@page import="java.util.List"%>
@@ -34,6 +35,7 @@
                 <li><a href="../index.jsp">Recetas</a></li>
                 <li><a href="../index.jsp">Administrador</a></li>
                 <li><a href="../login.jsp"><%= ClienteRepositorio.getClienteSession(request) != null? "Cerrar sesión" : "Iniciar sesión" %></a></li>
+                <li><a href="../carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
             </ul>
         </nav>
         
@@ -46,6 +48,7 @@
                 <td>Peso</td>
                 <td>Foto</td>
                 <td>Tipo</td>
+                <td>Añadir al carro</td>
             </tr>
             
             <c:forEach items="${pageScope.mascotas}" var="mascota">
@@ -57,6 +60,18 @@
                     <td>${mascota.getPeso()}</td>
                     <td><img style="width: 200px" src="${mascota.getFoto()}" alt="mascota image"/></td>
                     <td>${mascota.getTipo()}</td>
+                    <%
+                    // Existe en carro?
+                    boolean exists = false;
+                    try{
+                        Mascota mascota = (Mascota)pageContext.getAttribute("mascota");
+                        exists = Carro.getCarro().existsMascota(mascota);                      
+                    } catch(Exception e){}
+                    %>
+                    <form action="<%= exists? "../RemoveCarro" : "../AddCarro"%>" method="POST">
+                        <input type="hidden" name="id" value="${mascota.getId()}"/>
+                        <td><input type="submit" value="<%= exists? "Eliminar de carro" : "Añadir al carro"%>"/></td>
+                    </form>       
                 </tr>
             </c:forEach>
             

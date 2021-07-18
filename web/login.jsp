@@ -4,6 +4,7 @@
     Author     : Yunnicio
 --%>
 
+<%@page import="modelos.Carro"%>
 <%@page import="entidades.Cliente"%>
 <%@page import="repositorio.ClienteRepositorio"%>
 <%
@@ -31,6 +32,7 @@ if(cliente != null){
                 <li><a href="index.jsp">Recetas</a></li>
                 <li><a href="index.jsp">Administrador</a></li>
                 <li><a href="login.jsp">Iniciar sesión</a></li>
+                <li><a href="carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
             </ul>
         </nav>
         
