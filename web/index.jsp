@@ -41,7 +41,7 @@
             
             <h2>Tus mascotas</h2>
             <%
-            List<Mascota> mascotas = AdopcionRepositorio.getAdopcionesOfCliente(cliente);
+            List<Mascota> mascotas = AdopcionRepositorio.getMascotasOfCliente(cliente);
             pageContext.setAttribute("mascotas", mascotas);
             %>
             <table border="1">
@@ -53,6 +53,7 @@
                     <td>Peso</td>
                     <td>Foto</td>
                     <td>Tipo</td>
+                    <td>Eliminar adopción</td>
                 </tr>
 
                 <c:forEach items="${pageScope.mascotas}" var="mascota">
@@ -63,7 +64,13 @@
                         <td>${mascota.getEdad()}</td>
                         <td>${mascota.getPeso()}</td>
                         <td><img style="width: 200px" src="${mascota.getFoto()}" alt="mascota image"/></td>
-                        <td>${mascota.getTipo()}</td>     
+                        <td>${mascota.getTipo()}</td>   
+                        <td>
+                            <form action="RemoveAdopcion" method="POST">
+                                <input type="hidden" name="id" value="${mascota.getId()}"/>
+                                <input type="submit" value="Eliminar adopción"/>
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
 

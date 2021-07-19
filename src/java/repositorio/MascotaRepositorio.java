@@ -11,6 +11,7 @@ import entidades.Adopcion;
 import java.util.List;
 import entidades.Mascota;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -40,6 +41,21 @@ public class MascotaRepositorio {
         } catch(Exception e){
             return new ArrayList<Mascota>();
         }
+    }
+    
+    public static List<Mascota> busquedaMascotasDisponibles(String textoBusqueda){
+        List<Mascota> mascotas = obtenerMascotasDisponibles();
+        if(textoBusqueda == null || textoBusqueda.isEmpty()){
+            return mascotas;
+        }
+
+        mascotas = mascotas.stream().filter(
+                mascota -> 
+                        mascota.getTipo().toLowerCase().contains(textoBusqueda.toLowerCase()) || 
+                        mascota.getRaza().toLowerCase().contains(textoBusqueda.toLowerCase())
+        ).collect(Collectors.toList());
+        
+        return mascotas;
     }
     
     public static Mascota encontrarMascota(int id){

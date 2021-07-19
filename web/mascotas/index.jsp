@@ -15,7 +15,9 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <%
-    List<Mascota> mascotas = MascotaRepositorio.obtenerMascotasDisponibles();
+    String search = request.getParameter("search");
+    List<Mascota> mascotas = MascotaRepositorio.busquedaMascotasDisponibles(search);
+    
     pageContext.setAttribute("mascotas", mascotas);
 %>
 
@@ -38,6 +40,14 @@
                 <li><a href="../carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
             </ul>
         </nav>
+            
+        <form action="." method="GET">
+            <label>
+                Buscar por raza o tipo
+                <input type="text" name="search" placeholder="Inserte el texto de búsqueda" value="<%= search %>"/>
+            </label>
+            <input type="submit" value="Buscar"/>
+        </form>
         
         <table border="1">
             <tr>

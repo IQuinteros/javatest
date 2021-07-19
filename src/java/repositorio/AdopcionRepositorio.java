@@ -13,6 +13,7 @@ import entidades.Mascota;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import modelos.Carro;
 
@@ -58,14 +59,34 @@ public class AdopcionRepositorio {
         }
     }
     
-    public static List<Mascota> getAdopcionesOfCliente(Cliente cliente){
+    public static boolean QuitarAdopcion(Mascota mascota, Cliente cliente){
+        try{
+            
+            List<Adopcion> adopciones = getAdopcionesOfCliente(cliente);
+            adopciones = adopciones.stream().filter(adopcion -> adopcion.getMascotaId() == mascota.getId()).collect(Collectors.toList());
+            
+            if(adopciones.size() > 0){
+                Adopcion adopcionRef = adopciones.get(0);
+                AdopcionJpaController adopcionController = new AdopcionJpaController();
+                adopcionController.destroy(adopcionRef.getId());
+                return true;
+            }
+            
+            return false;
+            
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
+    public static List<Mascota> getMascotasOfCliente(Cliente cliente){
         try{
             AdopcionJpaController adopcionController = new AdopcionJpaController();
             List<Adopcion> adopciones = adopcionController.findAdopcionEntities();
             MascotaJpaController mascotaController = new MascotaJpaController();
             List<Mascota> mascotas = mascotaController.findMascotaEntities();
             
-            adopciones.stream().filter(adopcion -> adopcion.getClienteId() == cliente.getId());
+            adopciones = adopciones.stream().filter(adopcion -> adopcion.getClienteId() == cliente.getId()).collect(Collectors.toList());
             
             System.out.println(adopciones);
             
@@ -78,6 +99,20 @@ public class AdopcionRepositorio {
                 }
             }
             return toReturn;
+            
+        } catch(Exception e){
+            return new ArrayList();
+        }
+    }
+    
+    public static List<Adopcion> getAdopcionesOfCliente(Cliente cliente){
+        try{
+            AdopcionJpaController adopcionController = new AdopcionJpaController();
+            List<Adopcion> adopciones = adopcionController.findAdopcionEntities();
+            
+            adopciones = adopciones.stream().filter(adopcion -> adopcion.getClienteId() == cliente.getId()).collect(Collectors.toList());
+            
+            return adopciones;
             
         } catch(Exception e){
             return new ArrayList();
