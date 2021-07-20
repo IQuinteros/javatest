@@ -14,7 +14,7 @@
 
 <%
     String search = request.getParameter("search");
-    List<RecetaResult> recetas = RecetaRepositorio.busquedaRecetas(search, ClienteRepositorio.getClienteSession(request));
+    List<RecetaResult> recetas = RecetaRepositorio.busquedaRecetas(search, ClienteRepositorio.getClienteSession(request)).getResult();
     
     pageContext.setAttribute("recetas", recetas);
 %>

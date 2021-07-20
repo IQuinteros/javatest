@@ -12,6 +12,7 @@
 <%@page import="repositorio.ClienteRepositorio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,6 +21,15 @@
     </head>
     <body>
         <h1>Página para adoptar mascotas</h1>
+        
+        <c:if test="${!sessionScope.result.isSuccess()}">
+            <hr>
+            <div>
+                <p>${sessionScope.result.getMessage()}</p>
+            </div>
+            <hr>
+            <c:remove var="result" scope="session"/>
+        </c:if>
         
         <nav>
             <ul>
@@ -41,7 +51,7 @@
             
             <h2>Tus mascotas</h2>
             <%
-            List<Mascota> mascotas = AdopcionRepositorio.getMascotasOfCliente(cliente);
+            List<Mascota> mascotas = AdopcionRepositorio.getMascotasOfCliente(cliente).getResult();
             pageContext.setAttribute("mascotas", mascotas);
             %>
             <table border="1">

@@ -13,7 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelos.Carro;
+import modelos.OperationResult;
 import repositorio.AdopcionRepositorio;
 import repositorio.MascotaRepositorio;
 
@@ -37,7 +39,9 @@ public class Checkout extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try{
-            AdopcionRepositorio.Adoptar(request);
+            HttpSession session = request.getSession(false);
+            OperationResult result = AdopcionRepositorio.Adoptar(request);
+            session.setAttribute("result", result);
             
             response.sendRedirect("index.jsp");
         } catch(Exception e){

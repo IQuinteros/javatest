@@ -13,7 +13,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <%
-    List<Mascota> mascotas = Carro.getCarro().getMascotas();
+    List<Mascota> mascotas = Carro.getCarro().getMascotas().getResult();
     System.out.println("MASCOTAS: " + mascotas);
     pageContext.setAttribute("mascotas", mascotas);
     

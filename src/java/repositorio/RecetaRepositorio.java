@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import modelos.OperationResult;
 import modelos.RecetaResult;
 
 /**
@@ -22,16 +23,16 @@ import modelos.RecetaResult;
  */
 public class RecetaRepositorio {
     
-    public static Receta encontrarReceta(int id){
+    public static OperationResult<Receta> encontrarReceta(int id){
         try{
             RecetaJpaController controller = new RecetaJpaController();
-            return controller.findReceta(id);
+            return OperationResult.success(controller.findReceta(id));
         } catch(Exception e){
-            return null;
+            return OperationResult.failure(null, "No se ha encontrado la receta", e.getMessage());
         }
     }
     
-    public static List<RecetaResult> obtenerRecetas(Cliente cliente){
+    public static OperationResult<List<RecetaResult>> obtenerRecetas(Cliente cliente){
         try{
             RecetaJpaController recetaController = new RecetaJpaController();
             RecetaFavoritoJpaController favoritoController = new RecetaFavoritoJpaController();
@@ -48,49 +49,50 @@ public class RecetaRepositorio {
                 }
                 resultados.add(new RecetaResult(receta, favoritosReceta.size(), clienteFavorito));
             }
-            return resultados;
+            return OperationResult.success(resultados);
         } catch(Exception e){
-            return new ArrayList();
+            return OperationResult.failure(new ArrayList(), "No se han podido obtener las recetas", e.getMessage());
         }
     }
     
-    public static List<RecetaResult> busquedaRecetas(String textoBusqueda, Cliente cliente){
+    public static OperationResult<List<RecetaResult>> busquedaRecetas(String textoBusqueda, Cliente cliente){
         try{
-            List<RecetaResult> recetas = obtenerRecetas(cliente);
+            OperationResult<List<RecetaResult>> result = obtenerRecetas(cliente);
+            List<RecetaResult> recetas = result.getResult();
             if(textoBusqueda == null || textoBusqueda.isEmpty()){
-                return recetas;
+                return OperationResult.success(recetas);
             }
 
-            return recetas.stream().filter(
+            return OperationResult.success(recetas.stream().filter(
                 receta -> 
                     receta.getReceta().getObjetivo().toLowerCase().contains(textoBusqueda.toLowerCase()) ||
                     Float.toString(receta.getReceta().getPeso()).contains(textoBusqueda)
-            ).collect(Collectors.toList());
+            ).collect(Collectors.toList()));
         } catch(Exception e){
-            return new ArrayList();
+            return OperationResult.failure(new ArrayList(), "Ha ocurrido un error", e.getMessage());
         }
     }
     
-    public static boolean editarReceta(int id, String nombre, String descripcion, String objetivo, float peso){
+    public static OperationResult<Boolean> editarReceta(int id, String nombre, String descripcion, String objetivo, float peso){
         Receta receta = new Receta(id);
         receta.setNombre(nombre);
         receta.setDescription(descripcion);
         receta.setObjetivo(objetivo);
         receta.setPeso(peso);
-        return nuevaReceta(receta);
+        return editarReceta(receta);
     }
     
-    public static boolean editarReceta(Receta receta){
+    public static OperationResult<Boolean> editarReceta(Receta receta){
         try{
             RecetaJpaController controller = new RecetaJpaController();
             controller.edit(receta);
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha podido editar la receta", e.getMessage());
         }
     }
     
-    public static boolean nuevaReceta(String nombre, String descripcion, String objetivo, float peso){
+    public static OperationResult<Boolean> nuevaReceta(String nombre, String descripcion, String objetivo, float peso){
         Receta receta = new Receta();
         receta.setNombre(nombre);
         receta.setDescription(descripcion);
@@ -99,17 +101,27 @@ public class RecetaRepositorio {
         return nuevaReceta(receta);
     }
     
-    public static boolean nuevaReceta(Receta receta){
+    public static OperationResult<Boolean> nuevaReceta(Receta receta){
         try{
             RecetaJpaController controller = new RecetaJpaController();
             controller.create(receta);
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha podido crear la receta", e.getMessage());
         }
     }
     
-    public static boolean addFavorito(int recetaId, Cliente cliente){
+    public static OperationResult<Boolean> eliminarReceta(int recetaId){
+        try{
+            RecetaJpaController controller = new RecetaJpaController();
+            controller.destroy(recetaId);
+            return OperationResult.success(true);
+        } catch(Exception e){
+            return OperationResult.failure(false, "No se ha podido eliminar la receta", e.getMessage());
+        }
+    }
+    
+    public static OperationResult<Boolean> addFavorito(int recetaId, Cliente cliente){
         try{
             RecetaFavorito favorito = new RecetaFavorito();
             favorito.setClienteId(cliente.getId());
@@ -118,13 +130,13 @@ public class RecetaRepositorio {
             
             RecetaFavoritoJpaController favoritoController = new RecetaFavoritoJpaController();
             favoritoController.create(favorito);
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha podido añadir a favorito", e.getMessage());
         }
     }
     
-    public static boolean removeFavorite(int recetaId, Cliente cliente){
+    public static OperationResult<Boolean> removeFavorite(int recetaId, Cliente cliente){
         try{
             RecetaFavoritoJpaController favoritoController = new RecetaFavoritoJpaController();
             List<RecetaFavorito> favoritos = favoritoController.findRecetaFavoritoEntities();
@@ -137,11 +149,11 @@ public class RecetaRepositorio {
             
             if(favoritos.size() > 0){
                 favoritoController.destroy(favoritos.get(0).getId());
-                return true;
+                return OperationResult.success(true);
             }
-             return false;
+            return OperationResult.failure(false, "No se ha encontrado el favorito marcado");
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "Ha ocurrido un error", e.getMessage());
         }
     }
 }

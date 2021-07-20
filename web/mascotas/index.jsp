@@ -16,7 +16,7 @@
 
 <%
     String search = request.getParameter("search");
-    List<Mascota> mascotas = MascotaRepositorio.busquedaMascotasDisponibles(search);
+    List<Mascota> mascotas = MascotaRepositorio.busquedaMascotasDisponibles(search).getResult();
     
     pageContext.setAttribute("mascotas", mascotas);
 %>
@@ -40,6 +40,15 @@
                 <li><a href="../carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
             </ul>
         </nav>
+            
+        <c:if test="${!sessionScope.result.isSuccess()}">
+            <hr>
+            <div>
+                <p>${sessionScope.result.getMessage()}</p>
+            </div>
+            <hr>
+            <c:remove var="result" scope="session"/>
+        </c:if>
             
         <form action="." method="GET">
             <label>

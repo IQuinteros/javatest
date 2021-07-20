@@ -36,6 +36,7 @@ public class RecetaJpaController implements Serializable {
     }
 
     public void create(Receta receta) {
+        receta.setObjetivo(receta.getObjetivo().toUpperCase());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,6 +51,7 @@ public class RecetaJpaController implements Serializable {
     }
 
     public void edit(Receta receta) throws NonexistentEntityException, Exception {
+        receta.setObjetivo(receta.getObjetivo().toUpperCase());
         EntityManager em = null;
         try {
             em = getEntityManager();

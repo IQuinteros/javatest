@@ -12,7 +12,7 @@
 
 <%
     String search = request.getParameter("search");
-    List<Mascota> mascotas = MascotaRepositorio.busquedaMascotasDisponibles(search);
+    List<Mascota> mascotas = MascotaRepositorio.busquedaMascotas(search).getResult();
     
     pageContext.setAttribute("mascotas", mascotas);
 %>

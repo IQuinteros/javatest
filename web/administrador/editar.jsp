@@ -13,7 +13,7 @@
     String idString = request.getParameter("id");
     int id = Integer.parseInt(idString);
     
-    Mascota mascota = MascotaRepositorio.encontrarMascota(id);
+    Mascota mascota = MascotaRepositorio.encontrarMascota(id).getResult();
 %>
 
 <!DOCTYPE html>

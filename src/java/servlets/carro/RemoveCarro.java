@@ -8,12 +8,15 @@ package servlets.carro;
 import entidades.Mascota;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelos.Carro;
+import modelos.OperationResult;
 import repositorio.MascotaRepositorio;
 
 /**
@@ -80,16 +83,18 @@ public class RemoveCarro extends HttpServlet {
             int id = Integer.parseInt(idString);
             
             System.out.println("ID: " + idString);
+            HttpSession session = request.getSession(false);
             
-            Mascota mascota = MascotaRepositorio.encontrarMascota(id);
+            OperationResult<Mascota> mascotaResult = MascotaRepositorio.encontrarMascota(id);
             
-            boolean removed = false;
-            
-            if(mascota != null){
-                removed = Carro.getCarro().removeMascota(mascota);
+            if(mascotaResult.isSuccess()){
+                Mascota mascota = mascotaResult.getResult();
+                session.setAttribute("result", Carro.getCarro().removeMascota(mascota));
+            } else{
+                session.setAttribute("result", mascotaResult);
             }
             
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("mascotas/");
         } catch(Exception e){
             System.out.println(e.getMessage());
             response.sendRedirect("index.jsp");

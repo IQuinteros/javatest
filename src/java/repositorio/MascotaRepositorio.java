@@ -12,6 +12,7 @@ import java.util.List;
 import entidades.Mascota;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import modelos.OperationResult;
 
 /**
  *
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class MascotaRepositorio {
     
-    public static List<Mascota> obtenerMascotasDisponibles(){
+    public static OperationResult<List<Mascota>> obtenerMascotasDisponibles(){
         try{
             MascotaJpaController mascotaController = new MascotaJpaController();
             AdopcionJpaController adopcionController = new AdopcionJpaController();
@@ -37,16 +38,31 @@ public class MascotaRepositorio {
             
             mascotas.removeAll(adoptados);
             
-            return mascotas;
+            return OperationResult.success(mascotas);
         } catch(Exception e){
-            return new ArrayList<Mascota>();
+            return OperationResult.failure(new ArrayList(), "Ha ocurrido un error", e.getMessage());
         }
     }
     
-    public static List<Mascota> busquedaMascotasDisponibles(String textoBusqueda){
-        List<Mascota> mascotas = obtenerMascotasDisponibles();
+     public static OperationResult<List<Mascota>> obtenerMascotas(){
+        try{
+            MascotaJpaController mascotaController = new MascotaJpaController();
+            List<Mascota> mascotas = mascotaController.findMascotaEntities();
+            
+            return OperationResult.success(mascotas);
+        } catch(Exception e){
+            return OperationResult.failure(new ArrayList(), "Ha ocurrido un error", e.getMessage());
+        }
+    }
+    
+    public static OperationResult<List<Mascota>> busquedaMascotasDisponibles(String textoBusqueda){
+        OperationResult<List<Mascota>> result = obtenerMascotasDisponibles();
+        
+        if(!result.isSuccess()){ return OperationResult.failure(new ArrayList(), result.getMessage(), result.getDetailMessage()); }
+        
+        List<Mascota> mascotas = result.getResult();
         if(textoBusqueda == null || textoBusqueda.isEmpty()){
-            return mascotas;
+            return OperationResult.success(mascotas);
         }
 
         mascotas = mascotas.stream().filter(
@@ -55,29 +71,48 @@ public class MascotaRepositorio {
                         mascota.getRaza().toLowerCase().contains(textoBusqueda.toLowerCase())
         ).collect(Collectors.toList());
         
-        return mascotas;
+        return OperationResult.success(mascotas);
     }
     
-    public static Mascota encontrarMascota(int id){
+    public static OperationResult<List<Mascota>> busquedaMascotas(String textoBusqueda){
+        OperationResult<List<Mascota>> result = obtenerMascotas();
+        
+        if(!result.isSuccess()){ return OperationResult.failure(new ArrayList(), result.getMessage(), result.getDetailMessage()); }
+        
+        List<Mascota> mascotas = result.getResult();
+        if(textoBusqueda == null || textoBusqueda.isEmpty()){
+            return OperationResult.success(mascotas);
+        }
+
+        mascotas = mascotas.stream().filter(
+                mascota -> 
+                        mascota.getTipo().toLowerCase().contains(textoBusqueda.toLowerCase()) || 
+                        mascota.getRaza().toLowerCase().contains(textoBusqueda.toLowerCase())
+        ).collect(Collectors.toList());
+        
+        return OperationResult.success(mascotas);
+    }
+    
+    public static OperationResult<Mascota> encontrarMascota(int id){
         try{
             MascotaJpaController controller = new MascotaJpaController();
-            return controller.findMascota(id);
+            return OperationResult.success(controller.findMascota(id));
         } catch(Exception e){
-            return null;
+            return OperationResult.failure(null, "No se ha encontrado la mascota", e.getMessage());
         }
     }
     
-    public static boolean borrarMascota(int id){
+    public static OperationResult<Boolean> borrarMascota(int id){
         try{
             MascotaJpaController controller = new MascotaJpaController();
             controller.destroy(id);
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha podido eliminar la mascota", e.getMessage());
         }
     }
     
-    public static boolean nuevaMascota(String nombre, String raza, int edad, float peso, String foto, String tipo){
+    public static OperationResult<Boolean> nuevaMascota(String nombre, String raza, int edad, float peso, String foto, String tipo){
         Mascota mascota = new Mascota();
         mascota.setNombre(nombre);
         mascota.setRaza(raza);
@@ -88,19 +123,23 @@ public class MascotaRepositorio {
         return nuevaMascota(mascota);
     }
     
-    public static boolean nuevaMascota(Mascota mascota){
+    public static OperationResult<Boolean> nuevaMascota(Mascota mascota){
         try{
             MascotaJpaController controller = new MascotaJpaController();
             controller.create(mascota);
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha podido crear la mascota", e.getMessage());
         }
     }
     
-    public static boolean editarMascota(int id, String raza, int edad, float peso, String foto, String tipo){
+    public static OperationResult<Boolean> editarMascota(int id, String raza, int edad, float peso, String foto, String tipo){
         try{
-            Mascota mascota = encontrarMascota(id);
+            OperationResult<Mascota> result = encontrarMascota(id);
+            
+            if(!result.isSuccess()){ return OperationResult.failure(false, result.getMessage(), result.getDetailMessage()); }
+            
+            Mascota mascota = result.getResult();
             mascota.setRaza(raza);
             mascota.setEdad(edad);
             mascota.setPeso(peso);
@@ -108,17 +147,17 @@ public class MascotaRepositorio {
             mascota.setTipo(tipo);
             return editarMascota(mascota);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha encontrado la mascota", e.getMessage());
         }
     }
     
-    public static boolean editarMascota(Mascota mascota){
+    public static OperationResult<Boolean> editarMascota(Mascota mascota){
         try{
             MascotaJpaController controller = new MascotaJpaController();
             controller.edit(mascota);
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "No se ha podido editar la mascota", e.getMessage());
         }
     }
     

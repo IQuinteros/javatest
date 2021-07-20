@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import modelos.Carro;
+import modelos.OperationResult;
 
 /**
  *
@@ -23,13 +24,17 @@ import modelos.Carro;
  */
 public class AdopcionRepositorio {
     
-    public static boolean Adoptar(HttpServletRequest request){
+    public static OperationResult<Boolean> Adoptar(HttpServletRequest request){
         try{
             System.out.println("TO ADOPTAR");
             Cliente cliente = ClienteRepositorio.getClienteSession(request);
-            if(cliente == null) { return false; }
+            if(cliente == null) { return OperationResult.failure(false, "Necesita iniciar sesión"); }
+
+            OperationResult<List<Mascota>> result = Carro.getCarro().getMascotas();
             
-            List<Mascota> mascotas = Carro.getCarro().getMascotas();
+            if(!result.isSuccess()) { return OperationResult.failure(false, result.getMessage(), result.getDetailMessage()); }
+            
+            List<Mascota> mascotas = result.getResult();
             
             AdopcionJpaController controller = new AdopcionJpaController();
             
@@ -38,7 +43,10 @@ public class AdopcionRepositorio {
             long adopcionesCliente = adopciones.stream().filter(adopcion -> adopcion.getClienteId() == cliente.getId()).count();
             
             if(adopcionesCliente >= 3){
-                return false;
+                return OperationResult.failure(false, "Ya ha llegado al límite de mascotas para adoptar (3 máximo)");
+            }
+            else if(adopcionesCliente + mascotas.size() > 3){
+                return OperationResult.failure(false, "Solo puede añadir " + (adopcionesCliente + mascotas.size() - 3) + " mascota(s) más (3 mascotas máximo)");
             }
             
             for(Mascota mascota : mascotas){
@@ -52,34 +60,37 @@ public class AdopcionRepositorio {
             
             System.out.println("SUCCESS");
             Carro.getCarro().clearCart();
-            return true;
+            return OperationResult.success(true);
         } catch(Exception e ){
             System.out.println("ERROR ADOPCION: " + e.getMessage());
-            return false;
+            return OperationResult.failure(false, "Ha ocurrido un error", e.getMessage());
         }
     }
     
-    public static boolean QuitarAdopcion(Mascota mascota, Cliente cliente){
+    public static OperationResult<Boolean> QuitarAdopcion(Mascota mascota, Cliente cliente){
         try{
             
-            List<Adopcion> adopciones = getAdopcionesOfCliente(cliente);
+            OperationResult<List<Adopcion>> result = getAdopcionesOfCliente(cliente);
+            if(!result.isSuccess()){ return OperationResult.failure(false, result.getMessage(), result.getDetailMessage()); }
+            
+            List<Adopcion> adopciones = result.getResult();
             adopciones = adopciones.stream().filter(adopcion -> adopcion.getMascotaId() == mascota.getId()).collect(Collectors.toList());
             
             if(adopciones.size() > 0){
                 Adopcion adopcionRef = adopciones.get(0);
                 AdopcionJpaController adopcionController = new AdopcionJpaController();
                 adopcionController.destroy(adopcionRef.getId());
-                return true;
+                return OperationResult.success(true);
             }
             
-            return false;
+            return OperationResult.failure(false, "No se ha encontrado la adopción de esta mascota");
             
         }catch(Exception e){
-            return false;
+            return OperationResult.failure(false, "Ha ocurrido un error", e.getMessage());
         }
     }
     
-    public static List<Mascota> getMascotasOfCliente(Cliente cliente){
+    public static OperationResult<List<Mascota>> getMascotasOfCliente(Cliente cliente){
         try{
             AdopcionJpaController adopcionController = new AdopcionJpaController();
             List<Adopcion> adopciones = adopcionController.findAdopcionEntities();
@@ -98,24 +109,25 @@ public class AdopcionRepositorio {
                     }
                 }
             }
-            return toReturn;
+            
+            return OperationResult.success(toReturn);
             
         } catch(Exception e){
-            return new ArrayList();
+            return OperationResult.failure(new ArrayList(), "Ha ocurrido un error", e.getMessage());
         }
     }
     
-    public static List<Adopcion> getAdopcionesOfCliente(Cliente cliente){
+    public static OperationResult<List<Adopcion>> getAdopcionesOfCliente(Cliente cliente){
         try{
             AdopcionJpaController adopcionController = new AdopcionJpaController();
             List<Adopcion> adopciones = adopcionController.findAdopcionEntities();
             
             adopciones = adopciones.stream().filter(adopcion -> adopcion.getClienteId() == cliente.getId()).collect(Collectors.toList());
             
-            return adopciones;
+            return OperationResult.success(adopciones);
             
         } catch(Exception e){
-            return new ArrayList();
+            return OperationResult.failure(new ArrayList(), "Ha ocurrido un error", e.getMessage());
         }
     }
     

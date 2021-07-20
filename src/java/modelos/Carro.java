@@ -23,8 +23,12 @@ public class Carro {
         return singleton;
     }
     
-    public List<Mascota> getMascotas(){
-        List<Mascota> disponibles = MascotaRepositorio.obtenerMascotasDisponibles();
+    public OperationResult<List<Mascota>> getMascotas(){
+        OperationResult<List<Mascota>> result = MascotaRepositorio.obtenerMascotasDisponibles();
+        
+        if(!result.isSuccess()){ return OperationResult.failure(new ArrayList(), result.getMessage(), result.getDetailMessage()); }
+        
+        List<Mascota> disponibles = result.getResult();
         
         ArrayList<Mascota> finalResult = new ArrayList();
         for(Mascota enCarro : mascotas){
@@ -41,13 +45,13 @@ public class Carro {
         
         mascotas = finalResult;
         System.out.println(mascotas);
-        return mascotas;
+        return OperationResult.success(mascotas);
     }
     
-    public boolean addMascota(Mascota mascota){
-        if(getCount() >= 3){ return false; }
-        if(existsMascota(mascota)){ return false; }
-        return mascotas.add(mascota);
+    public OperationResult<Boolean> addMascota(Mascota mascota){
+        if(getCount() >= 3){ return OperationResult.failure(false, "Ha alcanzado el máximo de mascotas para añadir al carro (3 máximo)"); }
+        if(existsMascota(mascota)){ return OperationResult.failure(false, "La mascota ya está agregada al carrito"); }
+        return OperationResult.success(mascotas.add(mascota));
     }
     
     public boolean removeMascota(Mascota mascota){

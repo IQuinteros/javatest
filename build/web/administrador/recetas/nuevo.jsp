@@ -25,7 +25,7 @@
         <form action="../../AddReceta" method="POST">
             <label>
                 Nombre
-                <input type="text" name="nombre" placeholder="Ingrese el nombre" disabled/>
+                <input type="text" name="nombre" placeholder="Ingrese el nombre" required/>
             </label>
             <br>
             <label>

@@ -12,7 +12,7 @@
     String idString = request.getParameter("id");
     int id = Integer.parseInt(idString);
     
-    Receta receta = RecetaRepositorio.encontrarReceta(id);
+    Receta receta = RecetaRepositorio.encontrarReceta(id).getResult();
 %>
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@
             <input type="hidden" name="id" value="<%= receta.getId() %>"/>
             <label>
                 Nombre
-                <input type="text" name="nombre" placeholder="Ingrese el nombre" value="<%= receta.getNombre() %>" disabled/>
+                <input type="text" name="nombre" placeholder="Ingrese el nombre" value="<%= receta.getNombre() %>" required/>
             </label>
             <br>
             <label>
