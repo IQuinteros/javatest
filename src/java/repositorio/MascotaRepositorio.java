@@ -67,4 +67,14 @@ public class MascotaRepositorio {
         }
     }
     
+    public static boolean borrarMascota(int id){
+        try{
+            MascotaJpaController controller = new MascotaJpaController();
+            controller.destroy(id);
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
+    
 }

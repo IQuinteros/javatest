@@ -28,8 +28,8 @@
         
         <nav>
             <ul>
-                <li><a href="../index.jsp">Inicio</a></li>
-                <li><a href="../index.jsp">Añadir mascota</a></li>
+                <li><a href="#">Inicio Administrador</a></li>
+                <li><a href="nuevo.jsp">Añadir mascota</a></li>
             </ul>
         </nav>
             
@@ -70,7 +70,7 @@
                         </form>
                     </td>
                     <td>
-                        <form action="../RemoveMascota" method="GET">
+                        <form action="../RemoveMascota" method="POST">
                             <input type="hidden" name="id" value="${mascota.getId()}"/>
                             <input type="submit" value="Eliminar"/>
                         </form>
