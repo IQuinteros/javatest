@@ -19,7 +19,7 @@ Se subirá un video pronto con la respectiva explicación
 
 Se utilizó el conector para Java de MySQL (Connector/J) versión 8.0.25.
 
-El script para la base de datos es el siguiente:
+El script contiene algunos datos de ejemplo para probar. El script es el siguiente:
 
 ```sql
 -- phpMyAdmin SQL Dump
