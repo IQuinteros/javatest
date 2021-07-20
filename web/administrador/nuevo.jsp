@@ -17,6 +17,7 @@
         <nav>
             <ul>
                 <li><a href="index.jsp">Inicio Administrador</a></li>
+                <li><a href="recetas/">Recetas</a></li>
                 <li><a href="#">Añadir mascota</a></li>
             </ul>
         </nav>

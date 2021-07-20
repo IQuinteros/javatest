@@ -6,6 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -46,7 +49,8 @@ public class RecetaFavorito implements Serializable {
     private int clienteId;
     @Basic(optional = false)
     @Column(name = "fecha")
-    private int fecha;
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
 
     public RecetaFavorito() {
     }
@@ -55,7 +59,7 @@ public class RecetaFavorito implements Serializable {
         this.id = id;
     }
 
-    public RecetaFavorito(Integer id, int recetaId, int clienteId, int fecha) {
+    public RecetaFavorito(Integer id, int recetaId, int clienteId, Date fecha) {
         this.id = id;
         this.recetaId = recetaId;
         this.clienteId = clienteId;
@@ -86,11 +90,11 @@ public class RecetaFavorito implements Serializable {
         this.clienteId = clienteId;
     }
 
-    public int getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(int fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

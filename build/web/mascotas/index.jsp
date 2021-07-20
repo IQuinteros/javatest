@@ -34,8 +34,8 @@
             <ul>
                 <li><a href="../index.jsp">Inicio</a></li>
                 <li><a href="#">Mascotas</a></li>
-                <li><a href="../index.jsp">Recetas</a></li>
-                <li><a href="../index.jsp">Administrador</a></li>
+                <li><a href="../recetas/">Recetas</a></li>
+                <li><a href="../administrador/">Administrador</a></li>
                 <li><a href="../login.jsp"><%= ClienteRepositorio.getClienteSession(request) != null? "Cerrar sesión" : "Iniciar sesión" %></a></li>
                 <li><a href="../carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
             </ul>

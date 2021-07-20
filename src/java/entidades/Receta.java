@@ -51,7 +51,7 @@ public class Receta implements Serializable {
     private String objetivo;
     @Basic(optional = false)
     @Column(name = "peso")
-    private int peso;
+    private float peso;
 
     public Receta() {
     }
@@ -60,7 +60,7 @@ public class Receta implements Serializable {
         this.id = id;
     }
 
-    public Receta(Integer id, String nombre, String description, String objetivo, int peso) {
+    public Receta(Integer id, String nombre, String description, String objetivo, float peso) {
         this.id = id;
         this.nombre = nombre;
         this.description = description;
@@ -100,11 +100,11 @@ public class Receta implements Serializable {
         this.objetivo = objetivo;
     }
 
-    public int getPeso() {
+    public float getPeso() {
         return peso;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso(float peso) {
         this.peso = peso;
     }
 
