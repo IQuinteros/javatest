@@ -32,7 +32,7 @@ if(cliente != null){
                 <li><a href="recetas/">Recetas</a></li>
                 <li><a href="administrador/">Administrador</a></li>
                 <li><a href="login.jsp">Iniciar sesión</a></li>
-                <li><a href="carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
+                <li><a href="carro.jsp">Carro de adopción (<%= Carro.getCarro().getCount(request) %>)</a></li>
             </ul>
         </nav>
         

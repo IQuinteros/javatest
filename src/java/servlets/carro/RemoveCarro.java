@@ -89,7 +89,7 @@ public class RemoveCarro extends HttpServlet {
             
             if(mascotaResult.isSuccess()){
                 Mascota mascota = mascotaResult.getResult();
-                Carro.getCarro().removeMascota(mascota);
+                Carro.getCarro().removeMascota(mascota, request);
             } else{
                 session.setAttribute("result", mascotaResult);
             }

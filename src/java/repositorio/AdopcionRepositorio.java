@@ -30,7 +30,7 @@ public class AdopcionRepositorio {
             Cliente cliente = ClienteRepositorio.getClienteSession(request);
             if(cliente == null) { return OperationResult.failure(false, "Necesita iniciar sesión"); }
 
-            OperationResult<List<Mascota>> result = Carro.getCarro().getMascotas();
+            OperationResult<List<Mascota>> result = Carro.getCarro().getMascotas(request);
             
             if(!result.isSuccess()) { return OperationResult.failure(false, result.getMessage(), result.getDetailMessage()); }
             
@@ -59,7 +59,7 @@ public class AdopcionRepositorio {
             }
             
             System.out.println("SUCCESS");
-            Carro.getCarro().clearCart();
+            Carro.getCarro().clearCart(request);
             return OperationResult.success(true);
         } catch(Exception e ){
             System.out.println("ERROR ADOPCION: " + e.getMessage());

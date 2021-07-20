@@ -13,7 +13,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <%
-    List<Mascota> mascotas = Carro.getCarro().getMascotas().getResult();
+    List<Mascota> mascotas = Carro.getCarro().getMascotas(request).getResult();
     System.out.println("MASCOTAS: " + mascotas);
     pageContext.setAttribute("mascotas", mascotas);
     
@@ -36,7 +36,7 @@
                 <li><a href="recetas/">Recetas</a></li>
                 <li><a href="administrador/">Administrador</a></li>
                 <li><a href="login.jsp"><%= cliente != null? "Cerrar sesión" : "Iniciar sesión" %></a></li>
-                <li><a href="#">Carro de adopción (<%= Carro.getCarro().getCount() %>)</a></li>
+                <li><a href="#">Carro de adopción (<%= Carro.getCarro().getCount(request) %>)</a></li>
             </ul>
         </nav>
             

@@ -90,7 +90,7 @@ public class AddCarro extends HttpServlet {
             
             if(mascotaResult.isSuccess()){
                 Mascota mascota = mascotaResult.getResult();
-                session.setAttribute("result", Carro.getCarro().addMascota(mascota));
+                session.setAttribute("result", Carro.getCarro().addMascota(mascota, request));
             } else{
                 session.setAttribute("result", mascotaResult);
             }
