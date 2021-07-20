@@ -22,7 +22,7 @@
     <body>
         <h1>Página para adoptar mascotas</h1>
         
-        <c:if test="${!sessionScope.result.isSuccess()}">
+        <c:if test="${sessionScope.result != null && !sessionScope.result.isSuccess()}">
             <hr>
             <div>
                 <p>${sessionScope.result.getMessage()}</p>

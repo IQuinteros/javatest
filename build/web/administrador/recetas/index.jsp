@@ -11,6 +11,7 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
 
 <%
     String search = request.getParameter("search");
@@ -54,6 +55,7 @@
                 <td>Objetivo</td>
                 <td>Peso</td>
                 <td>Favoritos</td>
+                <td>Fecha última edición</td>
                 <td>Modificar</td>
                 <td>Eliminar</td>
             </tr>
@@ -66,6 +68,7 @@
                     <td>${receta.getReceta().getObjetivo()}</td>
                     <td>${receta.getReceta().getPeso()}</td> 
                     <td>${receta.getNumFavoritos()}</td>
+                    <td><fmt:formatDate pattern="dd-MM-yyyy" value="${receta.getReceta().getLastUpdate()}"/></td> 
                     <td>
                         <form action="editar.jsp" method="GET">
                             <input type="hidden" name="id" value="${receta.getReceta().getId()}"/>

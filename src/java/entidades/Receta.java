@@ -5,10 +5,13 @@
  */
 package entidades;
 
+import entidades.listeners.RecetaListener;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +19,8 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -23,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Yunnicio
  */
 @Entity
+@EntityListeners({RecetaListener.class})
 @Table(name = "receta")
 @XmlRootElement
 @NamedQueries({
@@ -52,6 +58,10 @@ public class Receta implements Serializable {
     @Basic(optional = false)
     @Column(name = "peso")
     private float peso;
+    @Basic(optional = false)
+    @Column(name = "lastUpdate")
+    @Temporal(TemporalType.DATE)
+    private Date lastUpdate;
 
     public Receta() {
     }
@@ -106,6 +116,14 @@ public class Receta implements Serializable {
 
     public void setPeso(float peso) {
         this.peso = peso;
+    }
+    
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     @Override

@@ -35,9 +35,6 @@ public class ClienteRepositorio {
                 if(item.getEmail().equals(email) && item.getContraseña().equals(pass)){
                     return item;
                 }
-                else{
-                    return null;
-                }
             }
         }
         

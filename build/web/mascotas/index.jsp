@@ -41,7 +41,7 @@
             </ul>
         </nav>
             
-        <c:if test="${!sessionScope.result.isSuccess()}">
+        <c:if test="${sessionScope.result != null && !sessionScope.result.isSuccess()}">
             <hr>
             <div>
                 <p>${sessionScope.result.getMessage()}</p>
@@ -53,7 +53,7 @@
         <form action="." method="GET">
             <label>
                 Buscar por raza o tipo
-                <input type="text" name="search" placeholder="Inserte el texto de búsqueda" value="<%= search %>"/>
+                <input type="text" name="search" placeholder="Inserte el texto de búsqueda" value="<%= search != null? search : "" %>"/>
             </label>
             <input type="submit" value="Buscar"/>
         </form>

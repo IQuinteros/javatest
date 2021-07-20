@@ -86,7 +86,7 @@ public class RemoveMascota extends HttpServlet {
             Mascota mascota = new Mascota(id);
             MascotaRepositorio.borrarMascota(id);
             
-            response.sendRedirect("mascotas/");
+            response.sendRedirect("administrador/");
         } catch(Exception e){
             System.out.println(e.getMessage());
             response.sendRedirect("index.jsp");

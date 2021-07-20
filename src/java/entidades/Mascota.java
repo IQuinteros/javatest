@@ -5,16 +5,21 @@
  */
 package entidades;
 
+import entidades.listeners.MascotaListener;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -22,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Yunnicio
  */
 @Entity
+@EntityListeners({MascotaListener.class})
 @Table(name = "mascota")
 @XmlRootElement
 @NamedQueries({
@@ -59,6 +65,10 @@ public class Mascota implements Serializable {
     @Basic(optional = false)
     @Column(name = "tipo")
     private String tipo;
+    @Basic(optional = false)
+    @Column(name = "lastUpdate")
+    @Temporal(TemporalType.DATE)
+    private Date lastUpdate;
 
     public Mascota() {
     }
@@ -131,6 +141,14 @@ public class Mascota implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     @Override
