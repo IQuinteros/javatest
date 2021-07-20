@@ -36,6 +36,7 @@ public class MascotaJpaController implements Serializable {
     }
 
     public void create(Mascota mascota) {
+        mascota.setTipo(mascota.getTipo().toUpperCase());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,6 +51,7 @@ public class MascotaJpaController implements Serializable {
     }
 
     public void edit(Mascota mascota) throws NonexistentEntityException, Exception {
+        mascota.setTipo(mascota.getTipo().toUpperCase());
         EntityManager em = null;
         try {
             em = getEntityManager();

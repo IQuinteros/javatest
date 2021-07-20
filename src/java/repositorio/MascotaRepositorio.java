@@ -77,4 +77,49 @@ public class MascotaRepositorio {
         }
     }
     
+    public static boolean nuevaMascota(String nombre, String raza, int edad, float peso, String foto, String tipo){
+        Mascota mascota = new Mascota();
+        mascota.setNombre(nombre);
+        mascota.setRaza(raza);
+        mascota.setEdad(edad);
+        mascota.setPeso(peso);
+        mascota.setFoto(foto);
+        mascota.setTipo(tipo);
+        return nuevaMascota(mascota);
+    }
+    
+    public static boolean nuevaMascota(Mascota mascota){
+        try{
+            MascotaJpaController controller = new MascotaJpaController();
+            controller.create(mascota);
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
+    
+    public static boolean editarMascota(int id, String raza, int edad, float peso, String foto, String tipo){
+        try{
+            Mascota mascota = encontrarMascota(id);
+            mascota.setRaza(raza);
+            mascota.setEdad(edad);
+            mascota.setPeso(peso);
+            mascota.setFoto(foto);
+            mascota.setTipo(tipo);
+            return editarMascota(mascota);
+        } catch(Exception e){
+            return false;
+        }
+    }
+    
+    public static boolean editarMascota(Mascota mascota){
+        try{
+            MascotaJpaController controller = new MascotaJpaController();
+            controller.edit(mascota);
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
+    
 }

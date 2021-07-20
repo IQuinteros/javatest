@@ -32,7 +32,8 @@
             </ul>
         </nav>
         
-        <form>
+        <form action="../EditMascota" method="POST">
+            <input type="hidden" name="id" value="<%= mascota.getId() %>"/>
             <label>
                 Nombre
                 <input type="text" name="nombre" placeholder="Ingrese el nombre" value="<%= mascota.getNombre() %>" disabled/>
@@ -40,33 +41,35 @@
             <br>
             <label>
                 Raza
-                <input type="text" name="raza" placeholder="Ingrese la raza" value="<%= mascota.getRaza() %>"/>
+                <input type="text" name="raza" placeholder="Ingrese la raza" value="<%= mascota.getRaza() %>" required/>
             </label>
             <br>
             <label>
                 Edad
-                <input type="number" name="edad" placeholder="Ingrese la edad" value="<%= mascota.getEdad() %>"/>
+                <input type="number" name="edad" placeholder="Ingrese la edad" value="<%= mascota.getEdad() %>" required/>
             </label>
             <br>
             <label>
                 Peso
-                <input type="number" name="peso" placeholder="Ingrese el peso" value="<%= mascota.getPeso() %>"/>
+                <input type="number" name="peso" placeholder="Ingrese el peso" value="<%= mascota.getPeso() %>" step="0.1" required/>
             </label>
             <br>
             <label>
                 Foto
-                <input type="text" name="foto" placeholder="Ingrese una foto" value="<%= mascota.getFoto() %>"/>
+                <input type="text" name="foto" placeholder="Ingrese una foto" value="<%= mascota.getFoto() %>" required/>
             </label>
+            <br>
+            <img src="<%= mascota.getFoto() %>" style="width: 200px; height: 100px; object-fit: cover"/>
             <br>
             <label>
                 Tipo
-                <select name="tipo">
+                <select name="tipo" required>
                     <option value="perro" <%= mascota.getTipo().toLowerCase().equals("perro")? "selected" : "" %>>Perro</option>
                     <option value="gato" <%= mascota.getTipo().toLowerCase().equals("gato")? "selected" : "" %>>Gato</option>
                 </select>
             </label>
             <br>
-            <input type="submit" value="Añadir"/>
+            <input type="submit" value="Editar"/>
         </form>
     </body>
 </html>
