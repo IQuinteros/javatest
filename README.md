@@ -16,7 +16,7 @@ El servidor para el despliegue de la web seleccionado para este desarrollo es Gl
 Revisar los dos videos de configuración y demostración. En resumen, es necesario levantar MySQL en localhost con alguna herramienta como "Laragon", para luego instalarle la base de datos con el script SQL que se encuentra más abajo. Luego hay que configurar el proyecto para que se ejecute correctamente en el computador.
 
 Video 1: https://youtu.be/rJxXSPt8n-8
-Video 2: Subiendo
+Video 2: https://youtu.be/i7gvLJQW9Uc
 
 ## Explicación del desarrollo
 Se subirá un video pronto con la respectiva explicación
