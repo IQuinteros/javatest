@@ -19,7 +19,7 @@ Video 1: https://youtu.be/rJxXSPt8n-8
 Video 2: https://youtu.be/i7gvLJQW9Uc
 
 ## Explicación del desarrollo
-Se subirá un video pronto con la respectiva explicación
+Video: https://youtu.be/EIfM2l1DKcw
 
 ## MySQL
 
