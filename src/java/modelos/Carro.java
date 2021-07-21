@@ -30,9 +30,9 @@ public class Carro {
         
         List<Mascota> disponibles = result.getResult();
         
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         List<Integer> mascotas = (List<Integer>)session.getAttribute("carro");
-        if(mascotas == null) { return OperationResult.failure(false, "Ha ocurrido un error"); }
+        if(mascotas == null) { return OperationResult.failure(new ArrayList(), "Ha ocurrido un error"); }
         
         ArrayList<Mascota> finalResult = new ArrayList();
         for(int enCarro : mascotas){
@@ -56,7 +56,7 @@ public class Carro {
         if(existsMascota(mascota, request)){ return OperationResult.failure(false, "La mascota ya está agregada al carrito"); }
         
         try{
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
             List<Integer> mascotas = (List<Integer>)session.getAttribute("carro");
             if(mascotas == null) { mascotas = new ArrayList(); }
 
@@ -70,7 +70,7 @@ public class Carro {
     
     public boolean removeMascota(Mascota mascota, HttpServletRequest request){
         try{
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
             List<Integer> mascotas = (List<Integer>)session.getAttribute("carro");
             if(mascotas == null) { return false; }
             mascotas.remove(mascota.getId());
@@ -82,14 +82,18 @@ public class Carro {
     }
     
     public int getCount(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        List<Integer> mascotas = (List<Integer>)session.getAttribute("carro");
-        if(mascotas == null) { return 0; }
-        return mascotas.size();
+        try{
+            HttpSession session = request.getSession(false);
+            List<Integer> mascotas = (List<Integer>)session.getAttribute("carro");
+            if(mascotas == null) { return 0; }
+            return mascotas.size();
+        } catch(Exception e){
+            return 0;
+        }
     }
     
     public boolean existsMascota(Mascota mascota, HttpServletRequest request){
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         List<Integer> mascotas = (List<Integer>)session.getAttribute("carro");
         if(mascotas == null) { return false; }
         
@@ -102,7 +106,7 @@ public class Carro {
     }
     
     public void clearCart(HttpServletRequest request){
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         session.setAttribute("carro", new ArrayList());
     }
 }
